@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6d5ce8">
+  <meta name="description" content="AI Quizly Advanced — practice computer science quizzes with timer, difficulty levels, dark mode, and progress tracking.">
+  <title>AI Quizly Advanced | Learn Smarter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" id="brandLink">
+        <span class="brand-mark">✦</span>
+        <span>
+          AI <strong>Quizly</strong>
+          <small>ADVANCED</small>
+        </span>
+      </a>
+
+      <div class="side-label">WORKSPACE</div>
+      <nav class="nav-menu">
+        <a class="nav-link active" href="#" id="dashboardBtn">
+          <span class="nav-icon">▦</span> Dashboard <span class="active-dot"></span>
+        </a>
+        <a class="nav-link" href="#generator" id="myQuizzesLink">
+          <span class="nav-icon">▤</span> Create Quiz
+        </a>
+        <a class="nav-link" href="#" id="historyBtn">
+          <span class="nav-icon">◷</span> History
+        </a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="upgrade-card">
+          <div class="upgrade-icon">✧</div>
+          <h3>Level up daily</h3>
+          <p>Track streaks, review mistakes, and improve accuracy over time.</p>
+          <a href="#generator">Start a quiz <span>↗</span></a>
+        </div>
+
+        <div class="theme-toggle-row">
+          <button type="button" class="theme-btn" id="themeToggle" aria-label="Toggle dark mode">
+            <span class="theme-icon" id="themeIcon">☾</span>
+            <span id="themeLabel">Dark mode</span>
+          </button>
+        </div>
+
+        <div class="profile-mini">
+          <div class="avatar avatar-user">Q</div>
+          <div>
+            <strong>Quiz Learner</strong>
+            <small>Local profile</small>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main-content">
+      <header class="topbar">
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="breadcrumbLabel">Dashboard</strong></div>
+        <div class="top-actions">
+          <div class="streak-pill" id="streakPill" title="Current learning streak">
+            <span>🔥</span>
+            <strong id="streakCount">0</strong>
+            <small>day streak</small>
+          </div>
+          <div class="user-greeting">
+            <span class="avatar avatar-user">Q</span>
+            <span>
+              <strong>Quiz Learner</strong>
+              <small id="greetingText">Ready to learn? 👋</small>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <!-- WELCOME -->
+      <section class="welcome-row" id="welcomePanel">
+        <div>
+          <div class="eyebrow"><span class="sparkle">✦</span> YOUR PERSONAL LEARNING SPACE</div>
+          <h1>Make learning <span>unforgettable.</span></h1>
+          <p>Pick a subject, set difficulty &amp; timer, then challenge yourself. Progress is saved on this browser.</p>
+        </div>
+        <div class="streak-card">
+          <span class="streak-icon">✦</span>
+          <div>
+            <strong>Small steps, big progress</strong>
+            <small>One focused quiz at a time.</small>
+          </div>
+        </div>
+      </section>
+
+      <!-- STATS -->
+      <section class="stats-grid">
+        <article class="stat-card">
+          <div class="stat-top">
+            <span>Total quizzes</span>
+            <span class="stat-icon purple">▤</span>
+          </div>
+          <div class="stat-number" id="statQuizzes">0</div>
+          <div class="stat-foot">Completed on this browser</div>
+          <div class="mini-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top">
+            <span>Questions answered</span>
+            <span class="stat-icon teal">✓</span>
+          </div>
+          <div class="stat-number" id="statAnswered">0</div>
+          <div class="stat-foot">Across completed quizzes</div>
+          <div class="mini-bars teal-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top">
+            <span>Average score</span>
+            <span class="stat-icon orange">♧</span>
+          </div>
+          <div class="stat-number" id="statAverage">0%</div>
+          <div class="stat-foot">Your average quiz accuracy</div>
+          <div class="score-track"><span id="scoreTrackFill"></span></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top">
+            <span>Best score</span>
+            <span class="stat-icon gold">★</span>
+          </div>
+          <div class="stat-number" id="statBest">0%</div>
+          <div class="stat-foot" id="statBestSubject">No quizzes yet</div>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <div class="quiz-column">
+          <!-- GENERATOR -->
+          <section class="generator-card" id="generator">
+            <div class="section-heading">
+              <div>
+                <span class="heading-icon">✧</span>
+                <div>
+                  <h2>Create a quiz</h2>
+                  <p>Computer science questions via Open Trivia DB</p>
+                </div>
+              </div>
+              <span class="ai-pill"><span></span> LIVE API</span>
+            </div>
+
+            <div class="search-form">
+              <span class="search-icon">⌕</span>
+              <input id="topicInput" type="text" placeholder="Type a subject, e.g. Python" aria-label="Quiz subject" autocomplete="off">
+              <button class="generate-btn" id="generateBtn" type="button">
+                Start quiz <span>→</span>
+              </button>
+            </div>
+
+            <div class="topic-row">
+              <span class="topic-label">SUBJECTS:</span>
+              <button type="button" class="topic-chip selected" data-subject="Python">Python</button>
+              <button type="button" class="topic-chip" data-subject="Java">Java</button>
+              <button type="button" class="topic-chip" data-subject="HTML/CSS">HTML/CSS</button>
+              <button type="button" class="topic-chip" data-subject="JavaScript">JavaScript</button>
+              <button type="button" class="topic-chip" data-subject="DBMS">DBMS</button>
+              <button type="button" class="topic-chip" data-subject="DSA">DSA</button>
+              <button type="button" class="topic-chip" data-subject="Operating System">Operating System</button>
+            </div>
+
+            <div class="generator-options">
+              <div class="option-group">
+                <label for="subjectSelect">Quiz subject</label>
+                <select id="subjectSelect" class="subject-select" aria-label="Select subject"></select>
+              </div>
+              <div class="option-group">
+                <label>Difficulty</label>
+                <div class="segmented" id="difficultyGroup" role="group" aria-label="Difficulty">
+                  <button type="button" data-value="any" class="chosen">Any</button>
+                  <button type="button" data-value="easy">Easy</button>
+                  <button type="button" data-value="medium">Medium</button>
+                  <button type="button" data-value="hard">Hard</button>
+                </div>
+              </div>
+              <div class="option-group">
+                <label>Questions</label>
+                <div class="segmented" id="countGroup" role="group" aria-label="Question count">
+                  <button type="button" data-value="10">10</button>
+                  <button type="button" data-value="15">15</button>
+                  <button type="button" data-value="20" class="chosen">20</button>
+                </div>
+              </div>
+              <div class="option-group">
+                <label>Time limit</label>
+                <div class="segmented" id="timeGroup" role="group" aria-label="Time limit">
+                  <button type="button" data-value="10">10 min</button>
+                  <button type="button" data-value="15">15 min</button>
+                  <button type="button" data-value="20" class="chosen">20 min</button>
+                </div>
+              </div>
+            </div>
+
+            <p class="api-note">
+              Note: Questions come from Open Trivia DB <strong>Science: Computers</strong> category.
+              Subject labels help you organise practice sessions.
+            </p>
+          </section>
+
+          <!-- QUIZ PANEL -->
+          <section class="quiz-card" id="quizPanel" hidden>
+            <div class="quiz-card-header">
+              <div>
+                <div class="eyebrow">YOUR CURRENT QUIZ</div>
+                <h2 id="quizTitle">Python Quiz <span class="live-dot"></span></h2>
+                <p id="quizSubtitle" class="muted-copy">Choose one answer. You can change it before moving on.</p>
+              </div>
+              <button type="button" class="icon-ghost" id="quitQuizBtn" title="Quit quiz" aria-label="Quit quiz">✕</button>
+            </div>
+
+            <div class="quiz-meta">
+              <span>QUESTION <strong id="questionNumber">01</strong> OF <span id="totalQuestions">20</span></span>
+              <span class="difficulty" id="difficultyBadge">PRACTICE</span>
+            </div>
+            <div class="progress-line"><span id="progressFill"></span></div>
+            <p class="progress-text" id="progressText">1 of 20 questions</p>
+
+            <div class="question-content">
+              <div class="question-copy">
+                <h3 id="questionText">Question will appear here.</h3>
+                <p class="hint-text">Press <kbd>1</kbd>–<kbd>4</kbd> to select, <kbd>Enter</kbd> next, <kbd>←</kbd><kbd>→</kbd> navigate.</p>
+              </div>
+              <div class="art-preview" aria-hidden="true">
+                <span class="moon"></span>
+                <span class="hill hill-one"></span>
+                <span class="hill hill-two"></span>
+                <span class="village"></span>
+              </div>
+            </div>
+
+            <div class="answer-grid" id="answerGrid" role="listbox" aria-label="Answer options"></div>
+            <div class="answer-feedback" id="answerFeedback" role="status" hidden></div>
+
+            <div class="quiz-footer">
+              <div class="timer-block">
+                <span class="timer-icon">◷</span>
+                <div>
+                  <small>TIME LEFT</small>
+                  <strong id="timerValue">20:00</strong>
+                </div>
+              </div>
+              <div class="quiz-footer-right">
+                <div>
+                  <small>YOUR SCORE</small>
+                  <strong id="scoreLive">0 pts</strong>
+                </div>
+                <div class="nav-buttons">
+                  <button type="button" class="previous-btn" id="prevBtn" disabled>← Prev</button>
+                  <button type="button" class="skip-btn" id="skipBtn">Skip</button>
+                  <button type="button" class="next-btn" id="nextBtn">Next →</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- RESULT PANEL -->
+          <section class="quiz-card result-card" id="resultPanel" hidden>
+            <div class="result-icon" id="resultIcon">🏆</div>
+            <div class="eyebrow">QUIZ SUMMARY</div>
+            <h2 id="resultTitle">Quiz complete!</h2>
+            <p id="resultSubject" class="muted-copy"></p>
+
+            <div class="result-stats">
+              <div>
+                <small>SCORE</small>
+                <strong id="resultScore">0/20</strong>
+              </div>
+              <div>
+                <small>PERCENTAGE</small>
+                <strong id="resultPercent">0%</strong>
+              </div>
+              <div>
+                <small>ANSWERED</small>
+                <strong id="resultAnswered">0/20</strong>
+              </div>
+            </div>
+
+            <div class="result-breakdown" id="resultBreakdown"></div>
+            <p id="resultMessage" class="result-message"></p>
+
+            <div class="result-actions">
+              <button type="button" class="previous-btn" id="reviewBtn">Review answers</button>
+              <button type="button" class="generate-btn" id="restartBtn">Try again ↻</button>
+              <button type="button" class="previous-btn" id="newQuizBtn">New quiz</button>
+            </div>
+          </section>
+
+          <!-- REVIEW LIST (compact summary under result) -->
+          <section class="quiz-card review-list-card" id="reviewListPanel" hidden>
+            <div class="panel-heading">
+              <div>
+                <h2>Answer review</h2>
+                <p>Quick look at every question</p>
+              </div>
+            </div>
+            <div id="reviewList" class="review-list"></div>
+          </section>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <aside class="right-column">
+          <section class="leaderboard-card">
+            <div class="panel-heading">
+              <div>
+                <h2>Quiz subjects</h2>
+                <p>Choose a topic to practise</p>
+              </div>
+            </div>
+            <div class="subject-list" id="subjectList">
+              <button type="button" data-subject="Python">🐍 <span>Python</span></button>
+              <button type="button" data-subject="Java">☕ <span>Java</span></button>
+              <button type="button" data-subject="HTML/CSS">🌐 <span>HTML/CSS</span></button>
+              <button type="button" data-subject="JavaScript">⚡ <span>JavaScript</span></button>
+              <button type="button" data-subject="DBMS">🗄️ <span>DBMS</span></button>
+              <button type="button" data-subject="DSA">🧩 <span>DSA</span></button>
+              <button type="button" data-subject="Operating System">💻 <span>Operating System</span></button>
+            </div>
+          </section>
+
+          <section class="activity-card">
+            <div class="panel-heading">
+              <div>
+                <h2>Recent activity</h2>
+                <p>Your latest learning sessions</p>
+              </div>
+            </div>
+            <div id="recentActivity">
+              <p class="empty-state">Your completed quizzes will appear here.</p>
+            </div>
+          </section>
+
+          <section class="tip-card">
+            <div class="tip-bulb">✦</div>
+            <div>
+              <strong>Study tip</strong>
+              <p>Read the explanation after each answer. Understanding why is more useful than memorising the option.</p>
+            </div>
+          </section>
+
+          <section class="shortcuts-card">
+            <div class="panel-heading">
+              <div>
+                <h2>Keyboard shortcuts</h2>
+                <p>Faster navigation while quizzing</p>
+              </div>
+            </div>
+            <ul class="shortcuts-list">
+              <li><kbd>1</kbd>–<kbd>4</kbd> Select option</li>
+              <li><kbd>Enter</kbd> / <kbd>→</kbd> Next</li>
+              <li><kbd>←</kbd> Previous</li>
+              <li><kbd>S</kbd> Skip question</li>
+              <li><kbd>Esc</kbd> Quit quiz</li>
+            </ul>
+          </section>
+        </aside>
+      </section>
+
+      <footer class="footer">
+        <span>© 2026 AI Quizly Advanced</span>
+        <span>Made for curious minds <b>♥</b></span>
+        <span>HTML · CSS · JavaScript · OpenTDB</span>
+      </footer>
+    </main>
+  </div>
+
+  <!-- HISTORY MODAL -->
+  <div class="modal-overlay" id="historyModal" hidden>
+    <div class="modal" role="dialog" aria-labelledby="historyModalTitle" aria-modal="true">
+      <div class="modal-header">
+        <h2 id="historyModalTitle">Quiz history</h2>
+        <button type="button" class="icon-ghost" id="closeHistoryBtn" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body" id="historyModalBody">
+        <p class="empty-state">No quizzes completed yet.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="previous-btn" id="clearHistoryBtn">Clear history</button>
+        <button type="button" class="generate-btn" id="closeHistoryBtn2">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOADING OVERLAY -->
+  <div class="loading-overlay" id="loadingOverlay" hidden>
+    <div class="loading-card">
+      <div class="spinner"></div>
+      <p>Fetching questions…</p>
+      <small>Open Trivia Database</small>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast" hidden role="status"></div>
+</body>
+</html>
